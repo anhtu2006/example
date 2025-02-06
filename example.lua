@@ -207,6 +207,7 @@ local function materials()
 		task.wait()
 		print("fruit")
         for _, giver in pairs(giverList) do
+	    task.wait(2)	
             if giver and giver:FindFirstChild("TouchInterest") then
                 firetouchinterest(HRP, giver, 0)
                 task.wait(0.5)                              
