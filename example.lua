@@ -446,10 +446,6 @@ local function checkAndTeleport()
     end
     for _, areaFolder in ipairs(areaCache) do
         for _, enemy in ipairs(areaFolder:GetChildren()) do
-            if not G.autofarmredmoon then
-                return 
-            end
-
             if enemy:IsA("Model") and not enemy:FindFirstChild("EnemyDefeat") then
                 teleportToEnemy(enemy)
 				task.wait(0.2)
@@ -478,8 +474,9 @@ fSection:NewToggle("AutoFarmRedMoon", "Buggy must equip knife throw slot 1 and m
         task.spawn(function()
             while G.autofarmredmoon do
 				print("red")
-                checkAndTeleport() 
-                task.wait(2) 
+                checkAndTeleport()
+				if not G.autofarmredmoon then return end
+                task.wait(2)
             end
         end)
     end
