@@ -205,9 +205,9 @@ local function materials()
     while G.automats do
 		task.wait()
 		print("fruit")
-		if not G.automats then return end
         for _, giver in pairs(giverList) do
-			task.wait(1)
+			if not G.automats then return end
+			task.wait(0.5)
             if giver and giver:FindFirstChild("TouchInterest") then
                 firetouchinterest(HRP, giver, 0)
                 task.wait(0.5)                              
