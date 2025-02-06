@@ -440,16 +440,12 @@ local function initializeAreaCache()
     end
 end
 
-initializeAreaCache() 
-
 local function checkAndTeleport()
+	initializeAreaCache() 
     local combatFolder = workspace:FindFirstChild("CombatFolder")
     if combatFolder then
         return 
     end
-	
-	initializeAreaCache() 
-	
     for _, areaFolder in ipairs(areaCache) do
         for _, enemy in ipairs(areaFolder:GetChildren()) do
             if not G.autofarmredmoon then
