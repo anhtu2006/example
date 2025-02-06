@@ -1,3 +1,6 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("ehh GUI, scripts made by anhtu")
 
@@ -15,29 +18,41 @@ local otherTab = Window:NewTab("Other")
 local otherSection = otherTab:NewSection("Other") 
 
 --Local G
-local G = {}
-G.autocollectstar = true
-G.autocollectgrandstar = true
-G.autocollectbluestar = true
-G.autocollectmoon = true
-G.autogranitoken = true
-G.autobuybm = true
-G.automats = true 
-G.godmode = true
-G.autofarm = true 
-G.autofarmredmoon = true
-G.autoactive = true
-G.autoredspiderlily = true
-G.autodragonball = true
-G.autodeathberry = true
 
-local HRP = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+_G.autocollectstar = false
+_G.autocollectgrandstar = false
+_G.autocollectbluestar = false
+_G.autocollectmoon = false
+_G.autogranitoken = fale
+_G.autobuybm = false
+_G.automats = false 
+_G.godmode = false
+_G.autofarm = false 
+_G.autofarmredmoon = false
+_G.autoactive = false
+_G.autoredspiderlily = false
+_G.autodragonball = false
+_G.autodeathberry = false
+
+
+local HRP = nil
 local targetItemNames = {}
-
 print("start")
+local function updateHRP()
+    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    HRP = Character:WaitForChild("HumanoidRootPart")
+    print("HRP Updated:", HRP)
+end
+updateHRP()
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(1)  
+    updateHRP()  
+end)
+
+
 local function buyBMItems()
-    while G.autobuybm do
-		task.wait()
+    while _G.autobuybm do
+		print("bm")
         local Granibm = workspace.Stalls["Black Market"]:FindFirstChild("Grani")
         if Granibm then
             local boughtSomething = false
@@ -74,14 +89,14 @@ local function buyBMItems()
 end
 
 local function collectBlueStar()
-    while G.autocollectbluestar do
-		task.wait()
+    while _G.autocollectbluestar do
+		print("bstar")
         local starShowerBlue = workspace:FindFirstChild("StarShower_Blue")
         if starShowerBlue then
             local models1 = starShowerBlue:FindFirstChild("Models")
             if models1 then
                 for _, child1 in pairs(models1:GetChildren()) do
-                    if child1.Name == "BlueStar" then
+                    if child1.Name == "BlueStar" and _G.autocollectbluestar then
 						print("bstar")
                         task.wait(2)
                         HRP.CFrame = child1.CFrame
@@ -99,14 +114,14 @@ local function collectBlueStar()
 end
 
 local function collectStar()
-    while G.autocollectstar do
-		task.wait()
+    while _G.autocollectstar do
+		print("star")
         local starShowerNormal = workspace:FindFirstChild("StarShower_Normal")
         if starShowerNormal then
             local models2 = starShowerNormal:FindFirstChild("Models")
             if models2 then
                 for _, child2 in pairs(models2:GetChildren()) do
-                    if child2.Name == "Star" then
+                    if child2.Name == "Star" and _G.autocollectstar then
 						print("star")
                         task.wait(2)
                         HRP.CFrame = child2.CFrame
@@ -124,14 +139,14 @@ local function collectStar()
 end
 
 local function collectgrandStar()
-    while G.autocollectgrandstar do
-		task.wait()
+    while _G.autocollectgrandstar do
+		print("gstar")
         local starShowergrand = workspace:FindFirstChild("StarShower_Grand")
         if starShowergrand then
             local models5 = starShowergrand:FindFirstChild("Models")
             if models5 then
                 for _, child5 in pairs(models5:GetChildren()) do
-                    if child5.Name == "Star" then
+                    if child5.Name == "Star" and _G.autocollectgrandstar then
 						print("gstar")
                         task.wait(2)
                         HRP.CFrame = child5.CFrame
@@ -150,8 +165,8 @@ end
 
 local function collectMoon()
     local tele = workspace.Stalls.Telescope.Proximity
-    while G.autocollectmoon do
-		task.wait()
+    while _G.autocollectmoon do
+		print("moon")
         local proximityPrompt3 = workspace.Stalls.Telescope.Proximity:FindFirstChild("MoonEvent")
         if proximityPrompt3 then
 			print("moon")
@@ -165,8 +180,8 @@ local function collectMoon()
 end
 
 local function collecttoken()
-    while G.autogranitoken do
-		task.wait()
+    while _G.autogranitoken do
+		print("token")
         local Granibm = workspace.Stalls["Black Market"]:FindFirstChild("Grani")
         if Granibm then
 			local token = false
@@ -180,7 +195,6 @@ local function collecttoken()
 			end
 			
 			if token then
-				print("token")
                 while Granibm do
 					Granibm = workspace.Stalls["Black Market"]:FindFirstChild("Grani")
 					if not Granibm then
@@ -202,16 +216,15 @@ for _, v in pairs(game:GetService("Workspace").MaterialGivers:GetDescendants()) 
     end
 end
 local function materials()
-    while G.automats do
+    while _G.automats do
 		task.wait()
 		print("fruit")
         for _, giver in pairs(giverList) do
 			task.wait(0.5)
-            if giver and giver:FindFirstChild("TouchInterest") and G.automats then
+            if giver and giver:FindFirstChild("TouchInterest") and _G.automats then
                 firetouchinterest(HRP, giver, 0)
                 task.wait(0.5)                              
                 firetouchinterest(HRP, giver, 1)
-				else return
             end
         end
         task.wait(2) 
@@ -220,56 +233,55 @@ end
 
 
 autoEnvSection:NewToggle("Auto Collect Star", "Enable or disable Auto Collect Star", function(state)
-    G.autocollectstar = state
+    _G.autocollectstar = state
     if state then
         task.spawn(collectStar)  
     end
 end)
 
 autoEnvSection:NewToggle("Auto Collect grand Star", "Enable or disable Auto Collect grand Star", function(state)
-    G.autocollectgrandstar = state
+    _G.autocollectgrandstar = state
     if state then
         task.spawn(collectgrandStar)
     end
 end)
 
 autoEnvSection:NewToggle("Auto Collect Blue Star", "Enable or disable Auto Collect Blue Star", function(state)
-    G.autocollectbluestar = state
+    _G.autocollectbluestar = state
     if state then
         task.spawn(collectBlueStar)
     end
 end)
 
 autoEnvSection:NewToggle("Auto steal Moon", "must have empty moon", function(state)
-    G.autocollectmoon = state
+    _G.autocollectmoon = state
     if state then
         task.spawn(collectMoon)
     end
 end)
 
 autoEnvSection:NewToggle("Auto Grani Token", "Enable or disable Auto Collect Grani Token", function(state)
-    G.autogranitoken = state
+    _G.autogranitoken = state
     if state then
         task.spawn(collecttoken)  
     end
 end)
 
 autoEnvSection:NewToggle("Materials", "Enable or disable collect Materials", function(state)
-    G.automats = state
+    _G.automats = state
     if state then
         task.spawn(materials)
     end
 end)
 --lily
 autoEnvSection:NewToggle("Auto Collect Red Spider Lily", "", function(state)
-    G.autoredspiderlily = state
+    _G.autoredspiderlily = state
     if state then
         task.spawn(function()
-            while G.autoredspiderlily do
-				task.wait()
+            while _G.autoredspiderlily do
+				print("lily")
                 local lily = workspace:FindFirstChild("Lily")
                 if lily then
-					print("lily")
                     local touchInterest = lily.Middle:FindFirstChild("TouchInterest")
                     if touchInterest then
                         firetouchinterest(HRP, touchInterest, 0)
@@ -284,14 +296,13 @@ autoEnvSection:NewToggle("Auto Collect Red Spider Lily", "", function(state)
 end)
 --death berry
 autoEnvSection:NewToggle("Auto Collect Death Berry", "", function(state)
-    G.autodeathberry = state
+    _G.autodeathberry = state
     if state then
         task.spawn(function()
-            while G.autodeathberry do
-				task.wait()
+            while _G.autodeathberry do
+				print("berry")
                 local death = workspace:FindFirstChild("DeathBush")
                 if death then
-					print("berry")
                     local touchInterest = death.Middle:FindFirstChild("TouchInterest")
                     if touchInterest then
                         firetouchinterest(HRP, touchInterest, 0)
@@ -307,14 +318,13 @@ end)
 
 --dragonball
 autoEnvSection:NewToggle("Auto Collect DB", "", function(state)
-    G.autodragonball = state
+    _G.autodragonball = state
     if state then
         task.spawn(function()
-            while G.autodragonball do
-				task.wait()
+            while _G.autodragonball do
+				print("db")
                 local ball = workspace:FindFirstChild("DragonBall")
                 if ball then
-					print("db")
                     local touchInterest = ball.Middle:FindFirstChild("TouchInterest")
                     if touchInterest then
                         firetouchinterest(HRP, touchInterest, 0)
@@ -335,7 +345,7 @@ end)
 --bm
 local ClearTargetButton
 autoEnvSection:NewToggle("Auto Buy BM", "Automatically buy items from Black Market", function(state)
-    G.autobuybm = state
+    _G.autobuybm = state
     if state then
         task.spawn(buyBMItems)
     end
@@ -386,61 +396,59 @@ end)
 
 
 --redmoon
-local targetTiers = {1, 2}
 local areaCache = {} 
-local function isTargetTier(tierValue)
-    for _, tier in ipairs(targetTiers) do
-        if tierValue == tier then
-            return true
-        end
-    end
-    return false
-end
 local function initializeAreaCache()
-    areaCache = {} 
+    areaCache = {}
     for _, areaFolder in ipairs(workspace.Enemies:GetChildren()) do
         local tierValue = areaFolder:FindFirstChild("Tier")
-        if tierValue and tierValue:IsA("NumberValue") and isTargetTier(tierValue.Value) then
-            table.insert(areaCache, areaFolder) 
+        if tierValue and tierValue:IsA("NumberValue") and (tierValue.Value == 1 or tierValue.Value == 2) then
+            table.insert(areaCach
+			e, areaFolder)
         end
     end
 end
 initializeAreaCache()
 
+-- Hàm reset nhân vật
 local function resetCharacter()
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        character:BreakJoints() 
+    if LocalPlayer.Character then
+        LocalPlayer.Character:BreakJoints()
     end
 end
 
-local function checkAndTeleport()
-    for _, areaFolder in ipairs(areaCache) do
-        for _, enemy in ipairs(areaFolder:GetChildren()) do
-            if enemy:IsA("Model") and not enemy:FindFirstChild("EnemyDefeat") then
-                local combatFolderExistTime = 0
-                while workspace:FindFirstChild("CombatFolder") do
-                    combatFolderExistTime = combatFolderExistTime + 0.5
-                    if combatFolderExistTime >= 15 then
-                        print("CombatFolder has been present for too long, resetting character...")
-                        resetCharacter()
-                        return 
+local function atredmoon()
+    task.spawn(function()
+        while _G.autofarmredmoon do
+            if HRP and isBloodMoon() then  
+                for _, areaFolder in ipairs(areaCache) do
+                    for _, enemy in ipairs(areaFolder:GetChildren()) do
+                        if enemy:IsA("Model") and not enemy:FindFirstChild("EnemyDefeat") and enemy:FindFirstChild("EnemyLocation") and _G.autofarmredmoon then
+                            local combatFolderExistTime = 0
+                            while workspace:FindFirstChild("CombatFolder") do
+                                print("CombatFolder found, waiting...")
+                                combatFolderExistTime = combatFolderExistTime + 0.5
+                                if combatFolderExistTime >= 10 then
+                                    print("CombatFolder quá lâu, reset nhân vật...")
+                                    resetCharacter()
+                                    return
+                                end
+                                task.wait(1)
+                            end
+                            HRP.CFrame = enemy.EnemyLocation.CFrame
+                            task.wait(1)
+                        end
                     end
-                    task.wait(0.5)
-                end
-                if enemy:FindFirstChild("EnemyLocation") then
-                    HRP.CFrame = enemy.EnemyLocation.CFrame
-                    task.wait(1)  
                 end
             end
+            task.wait(2)
         end
-    end
+    end)
 end
 
 
 --godmode
 local function toggleGodmode()
-	while G.godmode do
+	while _G.godmode do
         local combatFolder = workspace:FindFirstChild("CombatFolder")
         if combatFolder then
         combatFolder:Destroy()
@@ -451,21 +459,15 @@ local function toggleGodmode()
 end
 
 --redmoon
-fSection:NewToggle("AutoFarmRedMoon", "Buggy must equip knife throw slot 1 and mana regen passive", function(state)
-    G.autofarmredmoon = state
+fSection:NewToggle("AutoFarmRedMoon", "Chỉ hoạt động khi Blood Moon", function(state)
+    _G.autofarmredmoon = state
     if state then
-        task.spawn(function()
-            while G.autofarmredmoon do
-				print("red")
-                checkAndTeleport()
-                task.wait(2)
-            end
-        end)
+        task.spawn(atredmoon)
     end
 end)
 --godmode
 fSection:NewToggle("Enable Godmode", "?????????? just try it ", function(state)
-	G.godmode = state
+	_G.godmode = state
 	if state then
 		task.spawn(toggleGodmode)
 	end
@@ -476,10 +478,10 @@ fSection:NewSlider("Repeat Time", "", 10, 0.2, function(value)
     repeatTime = value  
 end)
 fSection:NewToggle("Auto Active 1", "nil", function(state)
-    G.autoactive = state 
-    if G.autoactive then
+    _G.autoactive = state 
+    if _G.autoactive then
         spawn(function()
-            while G.autoactive do  
+            while _G.autoactive do  
                 local args = {
                     [1] = "UseItem",  
                     [2] = 1,          
@@ -533,6 +535,11 @@ teleportSection:NewDropdown("Statues list", "Select a statue to teleport", statu
     if selectedStatueObj then
         HRP.CFrame = selectedStatueObj.Part.CFrame 
 	end
+end)
+
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(1)  
+    updateHRP()  
 end)
 --server
 local TeleportService = game:GetService("TeleportService")
