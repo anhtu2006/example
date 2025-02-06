@@ -38,7 +38,6 @@ print("start")
 local function buyBMItems()
     while G.autobuybm do
 		task.wait()
-		print("grani")
         local Granibm = workspace.Stalls["Black Market"]:FindFirstChild("Grani")
         if Granibm then
             local boughtSomething = false
@@ -77,13 +76,13 @@ end
 local function collectBlueStar()
     while G.autocollectbluestar do
 		task.wait()
-		print("blue")
         local starShowerBlue = workspace:FindFirstChild("StarShower_Blue")
         if starShowerBlue then
             local models1 = starShowerBlue:FindFirstChild("Models")
             if models1 then
                 for _, child1 in pairs(models1:GetChildren()) do
                     if child1.Name == "BlueStar" then
+						print("bstar")
                         task.wait(2)
                         HRP.CFrame = child1.CFrame
                         local proximityPrompt1 = child1:FindFirstChild("ProximityPrompt")
@@ -102,13 +101,13 @@ end
 local function collectStar()
     while G.autocollectstar do
 		task.wait()
-		print("star")
         local starShowerNormal = workspace:FindFirstChild("StarShower_Normal")
         if starShowerNormal then
             local models2 = starShowerNormal:FindFirstChild("Models")
             if models2 then
                 for _, child2 in pairs(models2:GetChildren()) do
                     if child2.Name == "Star" then
+						print("star")
                         task.wait(2)
                         HRP.CFrame = child2.CFrame
                         local proximityPrompt2 = child2:FindFirstChild("ProximityPrompt")
@@ -127,13 +126,13 @@ end
 local function collectgrandStar()
     while G.autocollectgrandstar do
 		task.wait()
-		print("gstar")
         local starShowergrand = workspace:FindFirstChild("StarShower_Grand")
         if starShowergrand then
             local models5 = starShowergrand:FindFirstChild("Models")
             if models5 then
                 for _, child5 in pairs(models5:GetChildren()) do
                     if child5.Name == "Star" then
+						print("gstar")
                         task.wait(2)
                         HRP.CFrame = child5.CFrame
                         local proximityPrompt5 = child5:FindFirstChild("ProximityPrompt")
@@ -153,9 +152,9 @@ local function collectMoon()
     local tele = workspace.Stalls.Telescope.Proximity
     while G.autocollectmoon do
 		task.wait()
-		print("moon")
         local proximityPrompt3 = workspace.Stalls.Telescope.Proximity:FindFirstChild("MoonEvent")
         if proximityPrompt3 then
+			print("moon")
             task.wait(1)
             HRP.CFrame = tele.CFrame
             task.wait(0.7)
@@ -168,7 +167,6 @@ end
 local function collecttoken()
     while G.autogranitoken do
 		task.wait()
-		print("token")
         local Granibm = workspace.Stalls["Black Market"]:FindFirstChild("Grani")
         if Granibm then
 			local token = false
@@ -182,6 +180,7 @@ local function collecttoken()
 			end
 			
 			if token then
+				print("token")
                 while Granibm do
 					Granibm = workspace.Stalls["Black Market"]:FindFirstChild("Grani")
 					if not Granibm then
@@ -207,7 +206,7 @@ local function materials()
 		task.wait()
 		print("fruit")
         for _, giver in pairs(giverList) do
-	    task.wait(2)	
+			task.wait(1)
             if giver and giver:FindFirstChild("TouchInterest") then
                 firetouchinterest(HRP, giver, 0)
                 task.wait(0.5)                              
