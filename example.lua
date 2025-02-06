@@ -205,6 +205,7 @@ local function materials()
     while G.automats do
 		task.wait()
 		print("fruit")
+		if not G.automats then return end
         for _, giver in pairs(giverList) do
 			task.wait(1)
             if giver and giver:FindFirstChild("TouchInterest") then
@@ -310,6 +311,7 @@ autoEnvSection:NewToggle("Auto Collect DB", "", function(state)
     if state then
         task.spawn(function()
             while G.autodragonball do
+				print("db")
 				task.wait()
                 local ball = workspace:FindFirstChild("DragonBall")
                 if ball then
@@ -444,8 +446,10 @@ local function checkAndTeleport()
     if combatFolder then
         return 
     end
+	if not G.autofarmredmoon then return end
     for _, areaFolder in ipairs(areaCache) do
         for _, enemy in ipairs(areaFolder:GetChildren()) do
+			if not G.autofarmredmoon then return end
             if enemy:IsA("Model") and not enemy:FindFirstChild("EnemyDefeat") then
                 teleportToEnemy(enemy)
 				task.wait(0.2)
@@ -475,7 +479,6 @@ fSection:NewToggle("AutoFarmRedMoon", "Buggy must equip knife throw slot 1 and m
             while G.autofarmredmoon do
 				print("red")
                 checkAndTeleport()
-				if not G.autofarmredmoon then return end
                 task.wait(2)
             end
         end)
