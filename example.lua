@@ -441,7 +441,8 @@ local function initializeAreaCache()
 end
 
 local function checkAndTeleport()
-	initializeAreaCache() 
+	initializeAreaCache()
+	print("areacache")
     local combatFolder = workspace:FindFirstChild("CombatFolder")
     if combatFolder then
         return 
