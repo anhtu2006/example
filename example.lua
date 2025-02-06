@@ -266,9 +266,9 @@ autoEnvSection:NewToggle("Auto Collect Red Spider Lily", "", function(state)
         task.spawn(function()
             while G.autoredspiderlily do
 				task.wait()
-				print("lily")
                 local lily = workspace:FindFirstChild("Lily")
                 if lily then
+					print("lily")
                     local touchInterest = lily.Middle:FindFirstChild("TouchInterest")
                     if touchInterest then
                         firetouchinterest(HRP, touchInterest, 0)
@@ -288,9 +288,9 @@ autoEnvSection:NewToggle("Auto Collect Death Berry", "", function(state)
         task.spawn(function()
             while G.autodeathberry do
 				task.wait()
-				print("berry")
                 local death = workspace:FindFirstChild("DeathBush")
                 if death then
+					print("berry")
                     local touchInterest = death.Middle:FindFirstChild("TouchInterest")
                     if touchInterest then
                         firetouchinterest(HRP, touchInterest, 0)
@@ -311,9 +311,9 @@ autoEnvSection:NewToggle("Auto Collect DB", "", function(state)
         task.spawn(function()
             while G.autodragonball do
 				task.wait()
-				print("db")
                 local ball = workspace:FindFirstChild("DragonBall")
                 if ball then
+					print("db")
                     local touchInterest = ball.Middle:FindFirstChild("TouchInterest")
                     if touchInterest then
                         firetouchinterest(HRP, touchInterest, 0)
@@ -447,7 +447,9 @@ local function checkAndTeleport()
     if combatFolder then
         return 
     end
-
+	
+	initializeAreaCache() 
+	
     for _, areaFolder in ipairs(areaCache) do
         for _, enemy in ipairs(areaFolder:GetChildren()) do
             if not G.autofarmredmoon then
