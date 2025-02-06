@@ -402,8 +402,7 @@ local function initializeAreaCache()
     for _, areaFolder in ipairs(workspace.Enemies:GetChildren()) do
         local tierValue = areaFolder:FindFirstChild("Tier")
         if tierValue and tierValue:IsA("NumberValue") and (tierValue.Value == 1 or tierValue.Value == 2) then
-            table.insert(areaCach
-			e, areaFolder)
+            table.insert(areaCache, areaFolder)
         end
     end
 end
@@ -416,9 +415,15 @@ local function resetCharacter()
     end
 end
 
+local function isBloodMoon()
+    local moonType = ReplicatedStorage.DayNightCycle:FindFirstChild("MoonType")
+    return moonType and moonType.Value == "Blood"
+end
+
 local function atredmoon()
     task.spawn(function()
         while _G.autofarmredmoon do
+			print("red")
             if HRP and isBloodMoon() then  
                 for _, areaFolder in ipairs(areaCache) do
                     for _, enemy in ipairs(areaFolder:GetChildren()) do
@@ -440,7 +445,7 @@ local function atredmoon()
                     end
                 end
             end
-            task.wait(2)
+            task.wait(30)
         end
     end)
 end
