@@ -420,7 +420,6 @@ end)
 --redmoon
 local targetTiers = {1, 2}
 local areaCache = {} 
-
 local function isTargetTier(tierValue)
     for _, tier in ipairs(targetTiers) do
         if tierValue == tier then
@@ -429,7 +428,6 @@ local function isTargetTier(tierValue)
     end
     return false
 end
-
 local function initializeAreaCache()
     areaCache = {} 
     for _, areaFolder in ipairs(workspace.Enemies:GetChildren()) do
@@ -439,10 +437,9 @@ local function initializeAreaCache()
         end
     end
 end
+initializeAreaCache()
 
 local function checkAndTeleport()
-	initializeAreaCache()
-	print("areacache")
     local combatFolder = workspace:FindFirstChild("CombatFolder")
     if combatFolder then
         return 
@@ -455,6 +452,7 @@ local function checkAndTeleport()
 
             if enemy:IsA("Model") and not enemy:FindFirstChild("EnemyDefeat") then
                 teleportToEnemy(enemy)
+				task.wait(0.2)
             end
         end
     end
@@ -481,7 +479,7 @@ fSection:NewToggle("AutoFarmRedMoon", "Buggy must equip knife throw slot 1 and m
             while G.autofarmredmoon do
 				print("red")
                 checkAndTeleport() 
-                task.wait(1) 
+                task.wait(2) 
             end
         end)
     end
