@@ -206,12 +206,12 @@ local function materials()
 		task.wait()
 		print("fruit")
         for _, giver in pairs(giverList) do
-			if not G.automats then return end
 			task.wait(0.5)
-            if giver and giver:FindFirstChild("TouchInterest") then
+            if giver and giver:FindFirstChild("TouchInterest") and G.automats then
                 firetouchinterest(HRP, giver, 0)
                 task.wait(0.5)                              
-                firetouchinterest(HRP, giver, 1) 
+                firetouchinterest(HRP, giver, 1)
+				else return
             end
         end
         task.wait(2) 
@@ -311,7 +311,6 @@ autoEnvSection:NewToggle("Auto Collect DB", "", function(state)
     if state then
         task.spawn(function()
             while G.autodragonball do
-				print("db")
 				task.wait()
                 local ball = workspace:FindFirstChild("DragonBall")
                 if ball then
@@ -369,30 +368,7 @@ for i, v in pairs(enemies) do
         end
     end
 end
-local function teleportToEnemy(enemy)
-    HRP.CFrame = enemy.EnemyLocation.CFrame
-    task.wait(1) 
-end
-local function checkAndTeleport1()
-    local combatFolder = workspace:FindFirstChild("CombatFolder")
-    if combatFolder then
-        return 
-    end
 
-    -- Ki?m tra n?u mob da ch?n trong slot 1 ho?c slot 2
-    local selectedMob = selectedMob1 or selectedMob2
-
-    if selectedMob then
-        -- Duy?t qua cac mob d? tim mob da ch?n
-        for _, enemy in pairs(workspace.Enemies:GetDescendants()) do
-            if enemy:IsA("Model") and enemy.Name == selectedMob and not enemy:FindFirstChild("EnemyDefeat") then
-                HRP.CFrame = enemy.HumanoidRootPart.CFrame
-                print("Teleported to mob:", selectedMob)
-                return
-            end
-        end
-    end
-end
 
 local selectedMob1 = nil
 local selectedMob2 = nil
@@ -405,17 +381,7 @@ fSection:NewDropdown("Slot 2", "", Mobs, function(selectedMob)
     selectedMob2 = selectedMob 
 end)
 
-fSection:NewToggle("AutoFarm", "Buggy must equip knife throw slot 1 and mana regen passive", function(state)
-    G.autofarmredmoon = state
-    if state then
-        task.spawn(function()
-            while G.autofarm do
-                checkAndTeleport1()
-                task.wait(1)
-            end
-        end)
-    end
-end)
+
 
 
 
@@ -441,18 +407,31 @@ local function initializeAreaCache()
 end
 initializeAreaCache()
 
-local function checkAndTeleport()
-    local combatFolder = workspace:FindFirstChild("CombatFolder")
-    if combatFolder then
-        return 
+local function resetCharacter()
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        character:BreakJoints() 
     end
-	if not G.autofarmredmoon then return end
+end
+
+local function checkAndTeleport()
     for _, areaFolder in ipairs(areaCache) do
         for _, enemy in ipairs(areaFolder:GetChildren()) do
-			if not G.autofarmredmoon then return end
             if enemy:IsA("Model") and not enemy:FindFirstChild("EnemyDefeat") then
-                teleportToEnemy(enemy)
-				task.wait(0.2)
+                local combatFolderExistTime = 0
+                while workspace:FindFirstChild("CombatFolder") do
+                    combatFolderExistTime = combatFolderExistTime + 0.5
+                    if combatFolderExistTime >= 15 then
+                        print("CombatFolder has been present for too long, resetting character...")
+                        resetCharacter()
+                        return 
+                    end
+                    task.wait(0.5)
+                end
+                if enemy:FindFirstChild("EnemyLocation") then
+                    HRP.CFrame = enemy.EnemyLocation.CFrame
+                    task.wait(1)  
+                end
             end
         end
     end
