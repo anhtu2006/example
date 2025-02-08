@@ -9,7 +9,7 @@ end
 
 -- Kích hoạt AntiKick ngay sau khi game load và UI được tạo
 local function activateAntiKick()
-	task.wait(5)
+	task.wait(10)
 	print("antikick")
 	task.wait(1)
     local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -30,6 +30,7 @@ local function activateAntiKick()
     end)
 end
 
+task.wait(2)
 -- Tải UI sau khi game load xong
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("ehh GUI, scripts made by anhtu")
@@ -607,7 +608,7 @@ fSection:NewToggle("Godmode v1 ", "?????????? just try it ", function(state)
 end)
 
 fSection:NewButton("GodMode v2 ", "may get ban", function()
-    -- **2. Sau đó kích hoạt GodMode**
+    task.wait(2)
     local Remote = game:GetService("ReplicatedStorage"):FindFirstChild("DamageNew", true)
     local Player = game:GetService("Players").LocalPlayer
     local OldNameCall = nil
@@ -805,4 +806,5 @@ otherSection:NewKeybind("Toggle UI Button", "Toggle UI Button", Enum.KeyCode.Lef
 	Library:ToggleUI()
 end)
 
+wait(5)
 activateAntiKick()
