@@ -9,7 +9,7 @@ end
 
 -- Kích hoạt AntiKick ngay sau khi game load và UI được tạo
 local function activateAntiKick()
-	task.wait(2)
+	task.wait(5)
 	print("antikick")
 	task.wait(1)
     local LocalPlayer = game:GetService("Players").LocalPlayer
