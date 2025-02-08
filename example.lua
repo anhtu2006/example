@@ -30,7 +30,7 @@ local function activateAntiKick()
     end)
 end
 
-task.wait(2)
+task.wait(5)
 -- Tải UI sau khi game load xong
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("ehh GUI, scripts made by anhtu")
